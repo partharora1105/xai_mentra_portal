@@ -1,0 +1,178 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+
+.chat-bot {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-right: 10px;
+    overflow: auto;
+    position: relative; /* Added to make input box fixed at bottom */
+}
+
+.horizontal-tree {
+    flex: 1;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.canvas {
+    position: relative;
+}
+
+
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* to make it circular */
+    background-color: #000; /* black circle */
+    margin-right: 10px;
+}
+
+.chat-container {
+    max-height: calc(100% - 100px); /* Adjusted to accommodate input box */
+    overflow-y: auto;
+}
+
+.chat-message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.input-container {
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+    width: 95%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.message-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    margin-right: 10px;
+}
+
+.send-button {
+    padding: 10px 20px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #45a049;
+}
+
+.heading-container {
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+
+
+.tree ul {
+    margin-left: 20px;
+}
+
+.tree li {
+    list-style-type: none;
+    margin:40px 10px;
+    position: relative;
+}
+
+.tree li::before {
+    content: "";
+    position: absolute;
+    top:-32px;
+    left:-20px;
+    border-left: 1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    border-radius:0 0 0 0px;
+    width:20px;
+    height:40px;
+}
+
+.tree li::after {
+    position:absolute;
+    content:"";
+    top:8px;
+    left:-20px;
+    border-left: 1px solid #ccc;
+    border-top:1px solid #ccc;
+    border-radius:0px 0 0 0;
+    width:20px;
+    height:100%;
+}
+
+.tree li:last-child::after  {
+    display:none;
+}
+
+.tree li:last-child:before{
+    border-radius: 0 0 0 5px;
+}
+
+ul.tree>li:first-child::before {
+    display:none;
+}
+
+ul.tree>li:first-child::after {
+    border-radius:5px 0 0 0;
+}
+
+/* Node Design */
+.tree li a {
+    /* border: 1px #ccc solid;
+    border-radius: 5px;
+    padding:2px 5px; */
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.tree li a:hover, .tree li a:hover+ul li a,
+.tree li a:focus, .tree li a:focus+ul li a {
+    background: #ccc; color: #000; border: 1px solid #000;
+}
+
+.tree li a:hover+ul li::after, .tree li a:focus+ul li::after,
+.tree li a:hover+ul li::before, .tree li a:focus+ul li::before 
+.tree li a:hover+ul::before, .tree li a:focus+ul::before 
+.tree li a:hover+ul ul::before, .tree li a:focus+ul ul::before{
+    border-color:  #000; /*connector color on hover*/
+}
