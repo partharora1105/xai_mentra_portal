@@ -188,3 +188,10 @@ ul.tree>li:first-child::after {
 .tree li a:hover+ul ul::before, .tree li a:focus+ul ul::before{
     border-color:  #000; /*connector color on hover*/
 }
+
+.add-button{
+    background-color: black!important;
+    color: white!important;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(1, 1, 1, 0.1);
+}

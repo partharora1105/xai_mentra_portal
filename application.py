@@ -104,6 +104,55 @@ def expandTree(k):
     return render_template("index.html", nodes = data, domain=DOMAIN)
 
 
+def find_key_path(input_key, current_dict, path=[]):
+    for key, value in current_dict.items():
+        # Append the current key to the path
+        new_path = path + [key]
+        if key == input_key:
+            return new_path  # Return the path if the key is found
+        elif isinstance(value, dict):
+            # If the value is a dictionary, recursively search for the key in it
+            found_path = find_key_path(input_key, value, new_path)
+            if found_path:
+                return found_path  # Return the path if the key is found within this branch
+    return None  # Return None if the key is not found
+
+@app.route("/expand/add/<k>")
+def doubleAddTree(k):
+    return redirect(url_for('addToTree', k=k))
+
+@app.route("/add/<k>")
+def addToTree(k):
+    json_file = PATH + f"static/data/nodes.json"
+    with open(json_file, 'r') as file:
+        nodes = json.load(file)
+    path = find_key_path(k, nodes)
+    print(path)
+    node = nodes
+    for key in path[:-1]:
+        node = node[key]
+
+    node[path[-1]]["just_added"] = {}
+    json_file = PATH + f"static/data/nodes.json"
+    with open(json_file, 'w') as file:
+        json.dump(nodes, file, indent=4)
+    return redirect(url_for('openHome'))
+    return path_to_key
+    
+    leaves = []
+    parent_map = {}
+    get_leaves_and_parents(curr_tree, leaves, parent_map)
+    try:
+        path = parent_map[k]
+    except KeyError:
+        return redirect(url_for('openHome'))
+
+
+
+
+    return render_template("index.html", nodes = data, domain=DOMAIN)
+
+
 
     # Print the parent map
     print("Parent map:")

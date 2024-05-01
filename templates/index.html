@@ -46,6 +46,7 @@
                         {% elif value %}
                             <ul>
                               {{ render_dict(value) }}
+                              <li><a class="add-button" href="add/{{key}}">+ Add</a></li>
                             </ul>
                         {% endif %}
                       </li>
