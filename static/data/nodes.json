@@ -1,0 +1,14 @@
+{
+    "My Profile" : {
+        "Bio Intro" : {},
+        "Strength" : {},
+        "Value" : {
+            "Creative Freedom" : {"Something" : {"hi":{}}},
+            "Bounce Off Ideas" : {}
+        },
+        "Work Experience" : {},
+        "Educational Background" : {},
+        "Special Strength" : {},
+        "Skills" : {}
+    }
+}
