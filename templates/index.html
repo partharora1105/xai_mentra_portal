@@ -16,7 +16,7 @@
         <div class="chat-bot">
             <div class="chat-header">
                 <div class="profile-pic"></div>
-                <h2>Neuro</h2>
+                <a href="{{domain}}" ><h2>Neuro</h2></a>
             </div>
             <div class="chat-container">
                 <div class="chat-message">Hi, [First Name Redacted]! How can I help you find the ideal career?</div>
@@ -30,22 +30,26 @@
             <div class="heading-container">
                 <h2>AI Learns You</h2>
             </div>
+            
             <div class="canvas">
               <ul class="tree">
                 {% macro render_dict(dictionary) %}
                     {% for key, value in dictionary.items() %}
                     <li>
-                        <a>{{ key }}</a>
-                          {% if value %}
-                          {% set length = value|length %}
-                          {% if length > 0 %}
-                          <span>{{ length }}</span>
-                          {% endif %}                     
-                        <ul>
-                            {{ render_dict(value) }}
-                        </ul>
-                      </li>
+                      <!-- <form action="{{domain}}/expand" method="post"> 
+                        <input type="submit">
+                      
+                      </form> -->
+                        <a href="expand/{{key}}">{{ key }}</a>
+                        {% if value|is_positive_integer %}
+                          <span>{{ value }}</span>
+                        {% elif value %}
+                            <ul>
+                              {{ render_dict(value) }}
+                            </ul>
                         {% endif %}
+                      </li>
+                       
                     {% endfor %}
                 {% endmacro %}
                 {{ render_dict(nodes) }}

@@ -42,6 +42,11 @@ body, html {
     margin-bottom: 10px;
 }
 
+.chat-header a {
+    text-decoration: none;
+    color: black;
+}
+
 .profile-pic {
     width: 40px;
     height: 40px;
@@ -160,6 +165,8 @@ ul.tree>li:first-child::after {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: 5px;
+    text-decoration: none; /* Removes underline */
+  color: black; /* Changes text color to black */
 }
 /* Node Num Design */
 .tree li span {
