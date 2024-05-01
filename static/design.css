@@ -66,6 +66,10 @@ body, html {
     border-radius: 5px;
 }
 
+.chat-user{
+    text-align: right;
+}
+
 .input-container {
     position: absolute;
     bottom: 1%;
@@ -96,7 +100,7 @@ body, html {
 }
 
 .send-button:hover {
-    background-color: #45a049;
+    background-color: black;
 }
 
 .heading-container {
@@ -194,4 +198,9 @@ ul.tree>li:first-child::after {
     color: white!important;
     font-size: 14px;
     box-shadow: 0 0 10px rgba(1, 1, 1, 0.1);
+}
+
+.reset-button {
+    margin-left: 500px;
+    margin-top: -50px;
 }

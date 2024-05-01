@@ -1,14 +1,6 @@
-import os
-import csv
-from datetime import datetime
-# from werkzeug.utils import secure_filename
-
 from flask import Flask, redirect, url_for, request, render_template, send_from_directory
-
-import sqlite3
-from flask import g
 import json
-import re
+import openai
 
 
 
@@ -24,6 +16,8 @@ PATH = localPath
 extension = ""
 root_key = "My Profile"
 
+OPENAI_KEY = ""
+
 
 def is_positive_integer(value):
     try:
@@ -34,6 +28,19 @@ def is_positive_integer(value):
 
 app.jinja_env.filters['is_positive_integer'] = is_positive_integer
 
+
+
+# GPT
+def openAiComplete(prompt):
+    print("Running GPT Query")
+    openai.api_key = OPENAI_KEY
+    output = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=prompt
+    )
+    response = output["choices"][0]["message"]["content"]
+    print("Completed GPT Query")
+    return response
 
 @app.route("/")
 def openHome():
@@ -46,7 +53,12 @@ def openHome():
     with open(json_file, 'w') as file:
         json.dump(data, file, indent=4)
 
-    return render_template("index.html", nodes = data, domain=DOMAIN)
+
+    json_file = PATH + f"static/data/chat_data.json"
+    with open(json_file, 'r') as file:
+        chat_data = json.load(file)
+
+    return render_template("index.html", nodes = data, chat_data = chat_data, domain=DOMAIN)
 
 
 def get_leaves_and_parents(tree, leaves, parent_map, path=[]):
@@ -137,37 +149,63 @@ def addToTree(k):
     with open(json_file, 'w') as file:
         json.dump(nodes, file, indent=4)
     return redirect(url_for('openHome'))
-    return path_to_key
-    
-    leaves = []
-    parent_map = {}
-    get_leaves_and_parents(curr_tree, leaves, parent_map)
-    try:
-        path = parent_map[k]
-    except KeyError:
-        return redirect(url_for('openHome'))
 
-
-
-
-    return render_template("index.html", nodes = data, domain=DOMAIN)
-
-
-
-    # Print the parent map
-    print("Parent map:")
-    for leaf, parents in parent_map.items():
-        print(leaf, ":", " -> ".join(parents))
-
-
-    return leaves
-    json_file = PATH + f"static/data/nodes.json"
+@app.route("/text", methods=["POST", "GET"])
+def inputText():
+    json_file = PATH + f"static/data/chat_data.json"
     with open(json_file, 'r') as file:
         data = json.load(file)
-    for k,v in data[root_key].items():
-        data[root_key][k] = len(v)
-    data = dict(data)
-    return render_template("index.html", text="Hello World", nodes = data, domain=DOMAIN)
+    data.append(request.form["txt"])
+
+
+
+
+    prompt= []
+    for idx, item in enumerate(data):
+        if (idx % 2 == 0):
+            prompt.append({"role": "system", "content": item})
+        else:
+            prompt.append({"role": "user", "content": item + "(Reply in less than 30 words)"})
+
+
+    output = openAiComplete(prompt)
+    data.append(output)
+
+    with open(json_file, 'w') as file:
+        json.dump(data, file, indent=4)
+    return redirect(url_for('openHome'))
+
+
+@app.route("/reset")
+def reset():
+    chat_data = ["Hi, Jennifer! How can I help you find the ideal career?"]
+    node_data = {
+        "My Profile": {
+            "Bio Intro": {},
+            "Strength": {},
+            "Value": {
+                "Creative Freedom": {
+                    "Something": {
+                        "hi": {}
+                    }
+                },
+                "Bounce Off Ideas": {}
+            },
+            "Work Experience": {},
+            "Educational Background": {},
+            "Special Strength": {},
+            "Skills": {}
+        }
+    }
+    json_file = PATH + f"static/data/chat_data.json"
+    with open(json_file, 'w') as file:
+        json.dump(chat_data, file, indent=4)
+
+    json_file = PATH + f"static/data/nodes.json"
+    with open(json_file, 'w') as file:
+        json.dump(node_data, file, indent=4)
+    return redirect(url_for('openHome'))
+    
 
 
 if __name__ == "__main__":
